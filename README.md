@@ -2,6 +2,8 @@
 
 A Clojure library to insert vaclab style data in vaclab style database documents.
 
+[![Clojars Project](https://img.shields.io/clojars/v/org.clojars.wactbprot/vl-data-insert.svg)](https://clojars.org/org.clojars.wactbprot/vl-data-insert)
+
 ## Usage
 
 ```clojure
