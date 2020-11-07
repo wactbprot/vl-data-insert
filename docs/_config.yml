@@ -1,0 +1,3 @@
+theme: jekyll-theme-minimal
+title: vl-data-insert
+description: A Clojure library to insert vaclab style data in vaclab style database documents.
