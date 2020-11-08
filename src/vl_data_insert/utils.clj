@@ -24,9 +24,7 @@
   nil."
   [m kw]
   (if (and (map? m) (keyword? kw))
-    (if-let [v (kw m)]
-      (assoc m kw (ensure-vec v))
-      m)))
+    (if-let [v (kw m)] (assoc m kw (ensure-vec v)) m)))
 
 (defn replace-if
   "Replaces `v`alue of `k`ey in struct if `v`is not `nil`.
@@ -60,13 +58,11 @@
 (defn path->kw-vec
   "Turns the path into a vector of keywords.
 
+  Example:
   ```clojure
   (path->kw-vec \"a.b.c\")
   ;; [:a :b :c]
   ```"
   [s]
   {:pre [(string? s)]}
-  (into []
-        (map
-         keyword
-         (string/split s (re-pattern "\\.")))))
+  (mapv keyword (string/split s (re-pattern "\\."))))
