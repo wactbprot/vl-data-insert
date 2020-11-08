@@ -4,7 +4,27 @@ A Clojure library to insert vaclab style data in vaclab style database documents
 
 [![Clojars Project](https://img.shields.io/clojars/v/org.clojars.wactbprot/vl-data-insert.svg)](https://clojars.org/org.clojars.wactbprot/vl-data-insert)
 
+See [the github.io page of vl-data-insert](https://wactbprot.github.io/vl-data-insert/).
+
 ## Usage
+
+In `project.clj` add:
+
+```clojure
+{:dependencies [[org.clojure/clojure                  "1.10.1"]
+                [org.clojars.wactbprot/vl-data-insert "0.1.1"]]
+}
+```
+
+Require in namespace with:
+
+```clojure
+(ns demo.insert
+    (:require [vl-data-insert.core :as i]))
+
+```
+
+Example usage:
 
 ```clojure
 (def p "Calibration.Measurement.Values.Pressure")
@@ -24,7 +44,8 @@ A Clojure library to insert vaclab style data in vaclab style database documents
             :SdValue [0]
             :N       [1]}]}}}})
 
-(store-results d [m m m m] p)
+(i/store-results d [m m m m] p)
+
 ;; =>
 ;;   {:Calibration
 ;;    {:Measurement

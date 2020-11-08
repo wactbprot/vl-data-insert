@@ -2,14 +2,27 @@
 
 * [API](./api)
 * [coverage](./coverage)
-* [namespaces](./graph.png)
 
 # installation
-
 
 [![Clojars Project](https://img.shields.io/clojars/v/org.clojars.wactbprot/vl-data-insert.svg)](https://clojars.org/org.clojars.wactbprot/vl-data-insert)
 
 
+In `project.clj` add:
+
+```clojure
+{:dependencies [[org.clojure/clojure                  "1.10.1"]
+                [org.clojars.wactbprot/vl-data-insert "0.1.1"]]
+}
+```
+
+Require in namespace with:
+
+```clojure
+(ns demo.insert
+    (:require [vl-data-insert.core :as i]))
+
+```
 
 ## Leiningen on Ubuntu 
 
