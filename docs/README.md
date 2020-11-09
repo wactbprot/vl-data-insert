@@ -24,6 +24,41 @@ Require in namespace with:
 
 ```
 
+Example usage:
+
+```clojure
+(def p "Calibration.Measurement.Values.Pressure")
+(def m {:Type    "a"
+        :Unit    "b"
+        :Value   [0]
+        :SdValue [0]
+        :N       [1]})
+
+(def d {:Calibration
+         {:Measurement
+          {:Values
+           {:Pressure
+           [{:Type    "a"
+            :Unit    "b"
+            :Value   [0]
+            :SdValue [0]
+            :N       [1]}]}}}})
+
+(i/store-results d [m m m m] p)
+
+;; =>
+;;   {:Calibration
+;;    {:Measurement
+;;     {:Values
+;;      {:Pressure
+;;       [{:Type "a",
+;;         :Unit "b",
+;;         :Value [0 0 0 0 0],
+;;         :SdValue [0 0 0 0 0],
+;;         :N [1 1 1 1 1]}]}}}}
+```
+
+
 ## Leiningen on Ubuntu 
 
 ```shell

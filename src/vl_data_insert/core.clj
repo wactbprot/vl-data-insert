@@ -58,8 +58,41 @@
         (assoc-in doc v m)))))
 
 (defn store-results
-  "Takes a vector of maps. Calls `store-result` on each map."
-  [doc res path]
-  (reduce 
-   (fn [doc m] (store-result doc m path))
-   doc res))
+  "Takes a vector of maps. Calls `store-result` on each map.
+
+  Example:
+  ```clojure
+  (def p \"Calibration.Measurement.Values.Pressure\")
+  (def m {:Type    \"a\"
+        :Unit    \"b\"
+        :Value   [0]
+        :SdValue [0]
+        :N       [1]})
+  
+  (def d {:Calibration
+         {:Measurement
+          {:Values
+           {:Pressure
+           [{:Type    \"a\"
+            :Unit    \"b\"
+            :Value   [0]
+            :SdValue [0]
+            :N       [1]}]}}}})
+  
+  (store-results d [m m m m] p)
+
+  ;; =>
+  ;;   {:Calibration
+  ;;    {:Measurement
+  ;;     {:Values
+  ;;      {:Pressure
+  ;;       [{:Type \"a\",
+  ;;         :Unit \"b\",
+  ;;         :Value [0 0 0 0 0],
+  ;;         :SdValue [0 0 0 0 0],
+  ;;         :N [1 1 1 1 1]}]}}}}
+  ```
+
+  "
+  [doc v p]
+  (reduce (fn [doc m] (store-result doc m p)) doc v))
