@@ -137,46 +137,46 @@
                 044&nbsp;&nbsp;(defn&nbsp;store-result
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                045&nbsp;&nbsp;&nbsp;&nbsp;&quot;Stores&nbsp;the&nbsp;result&nbsp;map&nbsp;`m`&nbsp;in&nbsp;the&nbsp;given&nbsp;`doc`ument&nbsp;under&nbsp;`p`ath.&nbsp;If
+                045&nbsp;&nbsp;&nbsp;&nbsp;&quot;Stores&nbsp;the&nbsp;result&nbsp;`x`(ensured&nbsp;to&nbsp;be&nbsp;a&nbsp;map&nbsp;`m`)&nbsp;in&nbsp;the&nbsp;given
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                046&nbsp;&nbsp;&nbsp;&nbsp;`m`&nbsp;contains&nbsp;`:Type`&nbsp;and&nbsp;`:Value`&nbsp;`m`&nbsp;is&nbsp;[[fit-in-struct]]&nbsp;and&nbsp;the
+                046&nbsp;&nbsp;&nbsp;&nbsp;`d`ocument&nbsp;under&nbsp;`p`ath.&nbsp;If&nbsp;`m`&nbsp;contains&nbsp;`:Type`&nbsp;and&nbsp;`:Value`&nbsp;`m`
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                047&nbsp;&nbsp;&nbsp;&nbsp;structure&nbsp;`s`&nbsp;is&nbsp;assumed&nbsp;to&nbsp;be&nbsp;a&nbsp;`vector`.&nbsp;Other&nbsp;cases&nbsp;(e.g.&nbsp;merge
+                047&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;[[fit-in-struct]]&nbsp;and&nbsp;the&nbsp;structure&nbsp;`s`&nbsp;is&nbsp;assumed&nbsp;to&nbsp;be&nbsp;a
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                048&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;`:AuxValues`)&nbsp;are&nbsp;straight
+                048&nbsp;&nbsp;&nbsp;&nbsp;`vector`.&nbsp;Other&nbsp;cases&nbsp;(e.g.&nbsp;merge&nbsp;in&nbsp;`:AuxValues`)&nbsp;are&nbsp;straight
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 049&nbsp;&nbsp;&nbsp;&nbsp;forward&nbsp;(see&nbsp;[[vl-data-insert&#x2F;test&#x2F;cmp&#x2F;doc_test.clj]]&nbsp;for&nbsp;details).&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                050&nbsp;&nbsp;&nbsp;&nbsp;[doc&nbsp;m&nbsp;p]
+                050&nbsp;&nbsp;&nbsp;&nbsp;[d&nbsp;x&nbsp;p]
                 </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
-                051&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;(u&#x2F;path-&gt;kw-vec&nbsp;p)]
+<span class="covered" title="7 out of 7 forms covered">
+                051&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[[m&nbsp;v]&nbsp;(u&#x2F;ensure-map&nbsp;x&nbsp;(u&#x2F;path-&gt;kw-vec&nbsp;p))]
                 </span><br/>
 <span class="covered" title="11 out of 11 forms covered">
-                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(:Type&nbsp;m)&nbsp;(:Value&nbsp;m))
+                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(:Type&nbsp;m)&nbsp;(:Value&nbsp;m))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[s&nbsp;(get-in&nbsp;doc&nbsp;v)]
+                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[s&nbsp;(get-in&nbsp;d&nbsp;v)]
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
-                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;doc&nbsp;v&nbsp;(fit-in-struct&nbsp;s&nbsp;m))
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;d&nbsp;v&nbsp;(fit-in-struct&nbsp;s&nbsp;m))
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
-                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;doc&nbsp;v&nbsp;[(vector-vals&nbsp;m)]))
+                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;d&nbsp;v&nbsp;[(vector-vals&nbsp;m)]))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[s&nbsp;(get-in&nbsp;doc&nbsp;v)]
+                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[s&nbsp;(get-in&nbsp;d&nbsp;v)]
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
-                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;doc&nbsp;v&nbsp;(merge&nbsp;s&nbsp;m))
+                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;d&nbsp;v&nbsp;(merge&nbsp;s&nbsp;m))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;doc&nbsp;v&nbsp;m)))))
+                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;d&nbsp;v&nbsp;m)))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
                 059&nbsp;&nbsp;

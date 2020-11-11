@@ -134,6 +134,27 @@
                     v3)) 
         "Map is assoced.")))
 
+(def p4 "Calibration.Measurement.AuxValues.OPK")
+
+(deftest store-result-iii
+  (testing "results are stored plain (iii) no map"
+    (is (= {:OPK 1} (get-in
+                    (store-result doc1 1 p4)
+                    v3)) 
+        "Map is added.")
+    (is (= {:OPK nil} (get-in
+                    (store-result doc1 nil p4)
+                    v3)) 
+        "nil is added.")
+    (is (= {:OPK true} (get-in
+                    (store-result doc1 true p4)
+                    v3))
+        "true is added.")
+    (is (= {:OPK "foo"} (get-in
+                    (store-result doc1 "foo" p4)
+                    v3))
+        "true is added.")))
+
 (deftest store-results-i
   (testing "results are stored(i)"
     (is (= [0 1] (:Value
