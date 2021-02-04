@@ -3,6 +3,24 @@
     :doc "Utils for data insert tasks."}
   (:require [clojure.string :as string]))
 
+(defn ensure-map
+  "Ensures `x`to be a map. If `x` is a value a map is constucted from
+  the last keyword and the value.
+
+  Example:
+  ```clojure
+  (ensure-map 10 [:a :b :c])
+  ;; =>
+  ;; [{:c 10} [:a :b]]
+  (ensure-map {:d 10} [:a :b :c])
+  ;; =>
+  ;; [{:d 10} [:a :b :c]]
+  ```
+  "
+  [x v]
+  (if (map? x)
+    [x v]
+    [{(last v) x} (into [] (butlast v))]))
 
 (defn ensure-vec
   "Ensures that `v` is a vector.

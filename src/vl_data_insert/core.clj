@@ -42,24 +42,57 @@
         (conj s (vector-vals m))))))
 
 (defn store-result
-  "Stores the result map `m` in the given `doc`ument under `p`ath. If
-  `m` contains `:Type` and `:Value` `m` is [[fit-in-struct]] and the
-  structure `s` is assumed to be a `vector`. Other cases (e.g. merge
-  in `:AuxValues`) are straight
+  "Stores the result `x`(ensured to be a map `m`) in the given
+  `d`ocument under `p`ath. If `m` contains `:Type` and `:Value` `m`
+  is [[fit-in-struct]] and the structure `s` is assumed to be a
+  `vector`. Other cases (e.g. merge in `:AuxValues`) are straight
   forward (see [[vl-data-insert/test/cmp/doc_test.clj]] for details)."
-  [doc m p]
-  (let [v (u/path->kw-vec p)]
-    (if (and (:Type m) (:Value m))
-      (if-let [s (get-in doc v)]
-        (assoc-in doc v (fit-in-struct s m))
-        (assoc-in doc v [(vector-vals m)]))
-      (if-let [s (get-in doc v)]
-        (assoc-in doc v (merge s m))
-        (assoc-in doc v m)))))
+  [d x p]
+  (let [[m v] (u/ensure-map x (u/path->kw-vec p))]
+      (if (and (:Type m) (:Value m))
+        (if-let [s (get-in d v)]
+          (assoc-in d v (fit-in-struct s m))
+          (assoc-in d v [(vector-vals m)]))
+        (if-let [s (get-in d v)]
+          (assoc-in d v (merge s m))
+          (assoc-in d v m)))))
 
 (defn store-results
-  "Takes a vector of maps. Calls `store-result` on each map."
-  [doc res path]
-  (reduce 
-   (fn [doc m] (store-result doc m path))
-   doc res))
+  "Takes a vector of maps. Calls `store-result` on each map.
+
+  Example:
+  ```clojure
+  (def p \"Calibration.Measurement.Values.Pressure\")
+  (def m {:Type    \"a\"
+        :Unit    \"b\"
+        :Value   [0]
+        :SdValue [0]
+        :N       [1]})
+  
+  (def d {:Calibration
+         {:Measurement
+          {:Values
+           {:Pressure
+           [{:Type    \"a\"
+            :Unit    \"b\"
+            :Value   [0]
+            :SdValue [0]
+            :N       [1]}]}}}})
+  
+  (store-results d [m m m m] p)
+
+  ;; =>
+  ;;   {:Calibration
+  ;;    {:Measurement
+  ;;     {:Values
+  ;;      {:Pressure
+  ;;       [{:Type \"a\",
+  ;;         :Unit \"b\",
+  ;;         :Value [0 0 0 0 0],
+  ;;         :SdValue [0 0 0 0 0],
+  ;;         :N [1 1 1 1 1]}]}}}}
+  ```
+
+  "
+  [doc v p]
+  (reduce (fn [doc m] (store-result doc m p)) doc v))

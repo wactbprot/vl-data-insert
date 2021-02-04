@@ -137,46 +137,46 @@
                 044&nbsp;&nbsp;(defn&nbsp;store-result
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                045&nbsp;&nbsp;&nbsp;&nbsp;&quot;Stores&nbsp;the&nbsp;result&nbsp;map&nbsp;`m`&nbsp;in&nbsp;the&nbsp;given&nbsp;`doc`ument&nbsp;under&nbsp;`p`ath.&nbsp;If
+                045&nbsp;&nbsp;&nbsp;&nbsp;&quot;Stores&nbsp;the&nbsp;result&nbsp;`x`(ensured&nbsp;to&nbsp;be&nbsp;a&nbsp;map&nbsp;`m`)&nbsp;in&nbsp;the&nbsp;given
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                046&nbsp;&nbsp;&nbsp;&nbsp;`m`&nbsp;contains&nbsp;`:Type`&nbsp;and&nbsp;`:Value`&nbsp;`m`&nbsp;is&nbsp;[[fit-in-struct]]&nbsp;and&nbsp;the
+                046&nbsp;&nbsp;&nbsp;&nbsp;`d`ocument&nbsp;under&nbsp;`p`ath.&nbsp;If&nbsp;`m`&nbsp;contains&nbsp;`:Type`&nbsp;and&nbsp;`:Value`&nbsp;`m`
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                047&nbsp;&nbsp;&nbsp;&nbsp;structure&nbsp;`s`&nbsp;is&nbsp;assumed&nbsp;to&nbsp;be&nbsp;a&nbsp;`vector`.&nbsp;Other&nbsp;cases&nbsp;(e.g.&nbsp;merge
+                047&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;[[fit-in-struct]]&nbsp;and&nbsp;the&nbsp;structure&nbsp;`s`&nbsp;is&nbsp;assumed&nbsp;to&nbsp;be&nbsp;a
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                048&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;`:AuxValues`)&nbsp;are&nbsp;straight
+                048&nbsp;&nbsp;&nbsp;&nbsp;`vector`.&nbsp;Other&nbsp;cases&nbsp;(e.g.&nbsp;merge&nbsp;in&nbsp;`:AuxValues`)&nbsp;are&nbsp;straight
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 049&nbsp;&nbsp;&nbsp;&nbsp;forward&nbsp;(see&nbsp;[[vl-data-insert&#x2F;test&#x2F;cmp&#x2F;doc_test.clj]]&nbsp;for&nbsp;details).&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                050&nbsp;&nbsp;&nbsp;&nbsp;[doc&nbsp;m&nbsp;p]
+                050&nbsp;&nbsp;&nbsp;&nbsp;[d&nbsp;x&nbsp;p]
                 </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
-                051&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;(u&#x2F;path-&gt;kw-vec&nbsp;p)]
+<span class="covered" title="7 out of 7 forms covered">
+                051&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[[m&nbsp;v]&nbsp;(u&#x2F;ensure-map&nbsp;x&nbsp;(u&#x2F;path-&gt;kw-vec&nbsp;p))]
                 </span><br/>
 <span class="covered" title="11 out of 11 forms covered">
-                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(:Type&nbsp;m)&nbsp;(:Value&nbsp;m))
+                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(:Type&nbsp;m)&nbsp;(:Value&nbsp;m))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[s&nbsp;(get-in&nbsp;doc&nbsp;v)]
+                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[s&nbsp;(get-in&nbsp;d&nbsp;v)]
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
-                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;doc&nbsp;v&nbsp;(fit-in-struct&nbsp;s&nbsp;m))
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;d&nbsp;v&nbsp;(fit-in-struct&nbsp;s&nbsp;m))
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
-                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;doc&nbsp;v&nbsp;[(vector-vals&nbsp;m)]))
+                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;d&nbsp;v&nbsp;[(vector-vals&nbsp;m)]))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[s&nbsp;(get-in&nbsp;doc&nbsp;v)]
+                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[s&nbsp;(get-in&nbsp;d&nbsp;v)]
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
-                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;doc&nbsp;v&nbsp;(merge&nbsp;s&nbsp;m))
+                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;d&nbsp;v&nbsp;(merge&nbsp;s&nbsp;m))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;doc&nbsp;v&nbsp;m)))))
+                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc-in&nbsp;d&nbsp;v&nbsp;m)))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
                 059&nbsp;&nbsp;
@@ -185,19 +185,118 @@
                 060&nbsp;&nbsp;(defn&nbsp;store-results
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                061&nbsp;&nbsp;&nbsp;&nbsp;&quot;Takes&nbsp;a&nbsp;vector&nbsp;of&nbsp;maps.&nbsp;Calls&nbsp;`store-result`&nbsp;on&nbsp;each&nbsp;map.&quot;
+                061&nbsp;&nbsp;&nbsp;&nbsp;&quot;Takes&nbsp;a&nbsp;vector&nbsp;of&nbsp;maps.&nbsp;Calls&nbsp;`store-result`&nbsp;on&nbsp;each&nbsp;map.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                062&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                062&nbsp;&nbsp;&nbsp;&nbsp;[doc&nbsp;res&nbsp;path]
+                063&nbsp;&nbsp;&nbsp;&nbsp;Example:
                 </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                063&nbsp;&nbsp;&nbsp;&nbsp;(reduce&nbsp;
+<span class="not-tracked" title="0 out of 0 forms covered">
+                064&nbsp;&nbsp;&nbsp;&nbsp;```clojure
                 </span><br/>
-<span class="covered" title="6 out of 6 forms covered">
-                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[doc&nbsp;m]&nbsp;(store-result&nbsp;doc&nbsp;m&nbsp;path))
+<span class="not-tracked" title="0 out of 0 forms covered">
+                065&nbsp;&nbsp;&nbsp;&nbsp;(def&nbsp;p&nbsp;\&quot;Calibration.Measurement.Values.Pressure\&quot;)
                 </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;doc&nbsp;res))
+<span class="not-tracked" title="0 out of 0 forms covered">
+                066&nbsp;&nbsp;&nbsp;&nbsp;(def&nbsp;m&nbsp;{:Type&nbsp;&nbsp;&nbsp;&nbsp;\&quot;a\&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Unit&nbsp;&nbsp;&nbsp;&nbsp;\&quot;b\&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Value&nbsp;&nbsp;&nbsp;[0]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:SdValue&nbsp;[0]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1]})
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                071&nbsp;&nbsp;&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                072&nbsp;&nbsp;&nbsp;&nbsp;(def&nbsp;d&nbsp;{:Calibration
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:Measurement
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                074&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:Values
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                075&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:Pressure
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[{:Type&nbsp;&nbsp;&nbsp;&nbsp;\&quot;a\&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                077&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Unit&nbsp;&nbsp;&nbsp;&nbsp;\&quot;b\&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                078&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Value&nbsp;&nbsp;&nbsp;[0]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                079&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:SdValue&nbsp;[0]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                080&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1]}]}}}})
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                081&nbsp;&nbsp;&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                082&nbsp;&nbsp;&nbsp;&nbsp;(store-results&nbsp;d&nbsp;[m&nbsp;m&nbsp;m&nbsp;m]&nbsp;p)
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                083&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                084&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;=&gt;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                085&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;{:Calibration
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                086&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;{:Measurement
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                087&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:Values
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                088&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:Pressure
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                089&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[{:Type&nbsp;\&quot;a\&quot;,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                090&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Unit&nbsp;\&quot;b\&quot;,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                091&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Value&nbsp;[0&nbsp;0&nbsp;0&nbsp;0&nbsp;0],
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                092&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:SdValue&nbsp;[0&nbsp;0&nbsp;0&nbsp;0&nbsp;0],
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                093&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:N&nbsp;[1&nbsp;1&nbsp;1&nbsp;1&nbsp;1]}]}}}}
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                094&nbsp;&nbsp;&nbsp;&nbsp;```
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                095&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                096&nbsp;&nbsp;&nbsp;&nbsp;&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                097&nbsp;&nbsp;&nbsp;&nbsp;[doc&nbsp;v&nbsp;p]
+                </span><br/>
+<span class="covered" title="10 out of 10 forms covered">
+                098&nbsp;&nbsp;&nbsp;&nbsp;(reduce&nbsp;(fn&nbsp;[doc&nbsp;m]&nbsp;(store-result&nbsp;doc&nbsp;m&nbsp;p))&nbsp;doc&nbsp;v))
                 </span><br/>
  </body>
 </html>
