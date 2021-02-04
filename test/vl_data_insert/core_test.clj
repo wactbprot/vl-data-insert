@@ -48,13 +48,7 @@
 (def doc1 {:Calibration {:Measurement
                          {:Values
                           {:Pressure []}}}})
-(def doc2 {:Calibration {:Measurement
-                         {:Values
-                          {:Pressure [{:Type "a"
-                                       :Unit "a"
-                                       :Value [0]
-                                       :SdValue [0]
-                                       :N [1]}]}}}})
+
 (def doc2 {:Calibration
            {:Measurement
             {:Values
@@ -150,3 +144,29 @@
                     v1)
                    1)))
         "Map is inserted and values become vectors.")))
+
+(comment
+  (def doc3 {:Calibration
+             {:Measurement
+              {:Values
+               {:Pressure [
+                           {:Type "a"
+                            :Unit "b"
+                            :Value [0]
+                            :SdValue [0]
+                            :N [1]}]}}}})
+
+  (def m-val-nil {:Type "b" :Unit "b" :Value nil :SdValue nil :N nil})
+  (def p3 "Calibration.Measurement.Values.Pressure")
+  
+  (deftest store-results-ii
+    (testing "value is nil"
+      (is (map? (store-results doc1 [] p1))
+          "Values got attached if they have equal Types.")))
+  (store-results doc3 [m-val-nil] p3)
+  {:Calibration
+   {:Measurement
+    {:Values
+     {:Pressure
+      [{:Type "a", :Unit "b", :Value [0], :SdValue [0], :N [1]}
+       {:Type "b", :Unit "b", :Value nil, :SdValue nil, :N nil}]}}}})
