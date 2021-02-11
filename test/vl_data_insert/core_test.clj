@@ -48,22 +48,15 @@
 (def doc1 {:Calibration {:Measurement
                          {:Values
                           {:Pressure []}}}})
-(def doc2 {:Calibration {:Measurement
-                         {:Values
-                          {:Pressure [{:Type "a"
-                                       :Unit "a"
-                                       :Value [0]
-                                       :SdValue [0]
-                                       :N [1]}]}}}})
+
 (def doc2 {:Calibration
            {:Measurement
             {:Values
-             {:Pressure [
-                    {:Type "a"
-                     :Unit "b"
-                     :Value [0]
-                     :SdValue [0]
-                     :N [1]}]}}}})
+             {:Pressure [{:Type "a"
+                          :Unit "b"
+                          :Value [0]
+                          :SdValue [0]
+                          :N [1]}]}}}})
 
 (def p1 "Calibration.Measurement.Values.Pressure")
 (def p2 "Calibration.Measurement.Values.not-there")
@@ -171,3 +164,26 @@
                     v1)
                    1)))
         "Map is inserted and values become vectors.")))
+
+
+(def doc3 {:Calibration
+           {:Measurement
+            {:Values
+               {:Pressure [{:Type "a"
+                            :Unit "b"
+                            :Value [0]
+                            :SdValue [0]
+                            :N [1]}]}}}})
+
+(def m-val-3 {:Type "a" :Unit "b" :Value nil :SdValue nil :N nil})
+(def p5 "Calibration.Measurement.Values.Pressure")
+  
+(deftest store-results-ii
+  (testing "nil value"
+    (let [d (store-results doc3 [m-val-3] p5)]
+      (is (= [0 nil] (get-in d  [:Calibration :Measurement :Values :Pressure 0 :Value]))
+          "is appended.")
+      (is (= [0 nil] (get-in d  [:Calibration :Measurement :Values :Pressure 0 :SdValue]))
+          "is appended.")
+      (is (= [1 nil] (get-in d  [:Calibration :Measurement :Values :Pressure 0 :N]))
+          "is appended."))))

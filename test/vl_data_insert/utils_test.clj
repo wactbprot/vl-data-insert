@@ -23,3 +23,8 @@
   (testing "Path translation (i)"
     (is (= v1 (path->kw-vec p1)) 
         "Translates path to keyword vector.")))
+
+(deftest ensure-vec-i
+  (testing "vector is ensured (i)"
+    (is (vector? (ensure-vec nil)) 
+        "nil is a valid value.")))

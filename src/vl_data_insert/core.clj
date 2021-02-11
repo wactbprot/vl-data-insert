@@ -20,14 +20,15 @@
 (defn append-and-replace
   "Append `:Value`, `:SdValue` and `:N` if present. Relaces `:Type` and
   `:Unit`."
-  [struct {t :Type v :Value u :Unit n :N s :SdValue}]
-  (->
-   (-> struct
-       (u/replace-if :Type t)
-       (u/replace-if :Unit u))
-   (u/append-if :Value v)
-   (u/append-if :SdValue s)
-   (u/append-if :N n)))
+  [struct m]
+  (let [{t :Type v :Value u :Unit n :N s :SdValue} m]
+    (->
+     (-> struct
+         (u/replace-if (u/check-kw m :Type) t)
+       (u/replace-if (u/check-kw m :Unit) u))
+     (u/append-if (u/check-kw m :Value) v)
+     (u/append-if (u/check-kw m :SdValue) s)
+     (u/append-if (u/check-kw m :N) n))))
 
 (defn fit-in-struct
   "Fits `m` into the given structure `s`. Function looks up the
@@ -49,13 +50,13 @@
   forward (see [[vl-data-insert/test/cmp/doc_test.clj]] for details)."
   [d x p]
   (let [[m v] (u/ensure-map x (u/path->kw-vec p))]
-      (if (and (:Type m) (:Value m))
-        (if-let [s (get-in d v)]
-          (assoc-in d v (fit-in-struct s m))
-          (assoc-in d v [(vector-vals m)]))
-        (if-let [s (get-in d v)]
-          (assoc-in d v (merge s m))
-          (assoc-in d v m)))))
+    (if (and (contains? m :Type) (contains? m :Value))
+      (if-let [s (get-in d v)]
+        (assoc-in d v (fit-in-struct s m))
+        (assoc-in d v [(vector-vals m)]))
+      (if-let [s (get-in d v)]
+        (assoc-in d v (merge s m))
+        (assoc-in d v m)))))
 
 (defn store-results
   "Takes a vector of maps. Calls `store-result` on each map.
@@ -91,8 +92,6 @@
   ;;         :Value [0 0 0 0 0],
   ;;         :SdValue [0 0 0 0 0],
   ;;         :N [1 1 1 1 1]}]}}}}
-  ```
-
-  "
+  ```"
   [doc v p]
   (reduce (fn [doc m] (store-result doc m p)) doc v))
