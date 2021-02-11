@@ -11,8 +11,8 @@ See [the github.io page of vl-data-insert](https://wactbprot.github.io/vl-data-i
 In `project.clj` add:
 
 ```clojure
-{:dependencies [[org.clojure/clojure                  "1.10.1"]
-                [org.clojars.wactbprot/vl-data-insert "0.1.1"]]
+{:dependencies [[org.clojure/clojure                  "1.10.2"]
+                [org.clojars.wactbprot/vl-data-insert "0.2.1"]]
 }
 ```
 
@@ -60,7 +60,7 @@ Example usage:
 
 ## License
 
-Copyright 2020 wactbprot
+Copyright 2021 wactbprot
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
